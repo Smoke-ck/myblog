@@ -38,16 +38,9 @@ plugins:
   - jekyll-paginate
 
 
-# paginate_path: "/blog/page:num/"
-# paginate: 9
-paginate:         2 
-pagination:
-  - paginate:
-      path:       /blog/page:num/
-      per_page:   9
-  - paginate:
-      path:       /engineering/page:num/
-      per_page:   2
+paginate_path: "/blog/page:num/"
+paginate: 9
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
