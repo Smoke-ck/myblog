@@ -1,0 +1,246 @@
+.services {
+  .animate-visibility__image { img { width: 120px; } }
+  .header-3 {
+    max-width: 75%;
+    margin: auto;
+  }
+
+  .description {
+    margin-top: 4vh;
+    text-align: justify;
+    text-align-last: center;
+  }
+
+  .button {
+    width: 30%;
+    background: $main-gradient;
+  }
+
+  .cards-container {
+    justify-content: space-around;
+
+    .card {
+      max-width: 360px;
+      min-width: 350px;
+      height: auto;
+      margin: 0;
+      padding: 4vh;
+      box-sizing: border-box;
+      background: rgba($white, .4);
+      z-index: 1;
+
+      &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 7em;
+        margin-top: 3vh;
+
+        img {
+          height: inherit;
+          border-radius: 50%;
+          box-shadow: inset -3px -3px 7px -4px grey, 1px 1px 14px -2px grey;
+        }
+      }
+
+      &__description { font-size: 1em; }
+
+      &__title-2 { font-size: 1.25em; }
+
+      .button { width: 50%; }
+    }
+  }
+
+  &__main {
+    min-height: 85vh;
+    height: 100%;
+    margin-top: -1em;
+
+    .header-3 {
+      margin-top: 7vh;
+      margin-bottom: 4vh;
+    }
+
+    .services__description-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5vh;
+      height: 60vh;
+
+      .description {
+        width: 49%;
+        line-height: 2.2em;
+        text-align: justify;
+      }
+
+      img {
+        width: 47%;
+        max-height: 60vh;
+        object-fit: contain;
+        object-position: top;
+      }
+    }
+  }
+
+  &__web-dev {
+    position: relative;
+    padding-bottom: 60px;
+
+    .wrap {
+      padding-bottom: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .carousel-background {
+      background: no-repeat url('/assets/images/about/benefits.svg');
+      background-size: 90%;
+      background-position: center;
+      padding: 50px 0;
+    }
+
+    .overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      right: 0;
+      background-color: rgba(252, 252, 252, 0.7);
+    }
+  }
+
+  &__custom-ror-dev {
+    background: center/cover no-repeat url('/assets/images/services/ror_dev_bg.webp');
+    background-color: $black_sea;
+    padding-bottom: 60px;
+    .wrap { padding-bottom: 0; }
+  }
+
+  &__mobile-dev {
+    background: radial-gradient(circle, rgba(212,184,234,1) 0%, rgba(255,255,255,1) 100%);
+  }
+
+  &__engagement-models {
+    position: relative;
+
+    .description { font-size: 1.15em; }
+
+    &-img {
+      position: absolute;
+      bottom: -4em;
+      width: 40%;
+      right: 0;
+      z-index: 0;
+    }
+
+    .card {
+      position: relative;
+
+      &__description { padding-bottom: 6vw; }
+
+      .button {
+        position: absolute;
+        bottom: 2em;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  &__approaches {
+    padding: 120px 0;
+    .header-2 {
+      max-width: 100%;
+      margin-top: 2.5em;
+      font-size: 1.4em;
+    }
+
+    .header-3 { margin: 5vh auto; }
+
+    .button { background: transparent; }
+  }
+  .timeline-item { padding-bottom: 80px; }
+}
+
+@media (max-width: 768px) {
+  .services {
+    .animate-visibility__image { img { width: 80px; } }
+    .header-3 { max-width: 90%; }
+
+    .button {
+      margin-top: 0;
+      margin-bottom: 0;
+      width: 70%;
+    }
+
+    &__main {
+      min-height: 100%;
+
+      .header-3 { margin-top: 1vh; }
+
+      .services__description-wrap {
+        height: 100%;
+        margin-top: 0;
+
+        .description { width: 100%; }
+
+        img { display: none; }
+      }
+    }
+
+    .cards-container {
+      flex-wrap: wrap;
+
+      .card {
+        min-width: 90%;
+
+        &__title-2 {
+          font-size: 1em;
+          margin-left: 3vh;
+          margin-right: 3vh;
+        }
+
+        &__icon svg { height: 5vh }
+
+        &:first-child {
+          margin-bottom: 5vh;
+
+          .card__icon {
+            height: 9vh;
+
+            svg { height: 9vh; }
+          }
+        }
+
+        &__description {
+          font-size: .8em;
+          padding-right: 3vh;
+          padding-left: 3vh;
+        }
+
+        .button { position: sticky; }
+      }
+    }
+
+    &__engagement-models-img { bottom: -1em; }
+
+    &__approaches {
+      padding: 65px 0 45px 0;
+      .header-2 { font-size: 1em; }
+    }
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .services {
+    .cards-container {
+      .card {
+        max-width: 360px;
+        min-width: 350px;
+        padding: 3vh;
+      }
+    }
+  }
+}
