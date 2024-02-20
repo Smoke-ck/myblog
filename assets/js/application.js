@@ -4,15 +4,16 @@ document.addEventListener("DOMContentLoaded", initTransitionView);
 function initTransitionView() {
   if (screen.width > 748) {
     setActiveNavLink();
-    const transition_links = document.querySelectorAll('[data-link="transition"]')
+    const transition_links = document.querySelectorAll('[data-link="transition"]');
 
     transition_links.forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        const name = e.target.href.split('/').filter(word => word !== '').pop()
-        link.style.setProperty("view-transition-name", name)
+        const url = e.currentTarget.href;
+        const name = url.split('/').filter(word => word !== '').pop().replace('.html','');
+        link.style.setProperty("view-transition-name", name);
 
-        setTimeout(function() { window.location.href = e.target.href; });
+        setTimeout(function() { window.location.href = url; });
       });
     });
   }

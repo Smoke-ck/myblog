@@ -29,9 +29,11 @@ layout: default
   </div>
 </section>
 
-{% assign name = page.post-id %}
+{% assign parts = page.url | split: '/' %}
+{% assign filename_with_extension = parts | last %}
+{% assign filename = filename_with_extension | split: '.' | first %}
 
-<section class='post-content' style="view-transition-name: {{ name }}">
+<section class='post-content' style="view-transition-name: {{ filename }}">
   <div class="post-content__left-block"></div>
 
   <section class="post-content__main wrapper">
