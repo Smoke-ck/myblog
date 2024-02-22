@@ -11,7 +11,7 @@ time-to-read: 4 min
 scripts: [post]
 post-id: what-do-you-know-about-digital-marketing-strategy
 ---
-
+## New title
 Agile project management has grown in popularity significantly over the last ten years, and with good reason. The use of short development cycles called "sprints" perfectly aligns with the fast-paced nature of business in the modern era. Additionally, the drive for better performance, efficiency, and results in a world where approximately [66% of development projects fail](https://www.tiempodev.com/blog/why-software-development-projects-fail/ ), makes agile management methods attractive to most businesses. 
 
 However, running a successful agile development project is easier said than done. If you want a smooth project that results in a product that adds value to the business, you need to utilize robust agile methods methodically and deliberately. For example, both **Sprint Backlogs** and **Product Backlogs** (which follow the Scrum framework) **are essential for development teams to plan their next steps**. 
