@@ -28,7 +28,6 @@ Backlogs are a vital element of this process. **Backlog is rooted in agile metho
 
 The added structure and accountability of backlogs make it easy for product managers to quickly prioritize the most critical work. For example, requests for new features and improvements to existing functionality can be added to a backlog and graded based on business value. It can also be helpful to create backlogs for additional planning stages after capturing feature requests. 
 
-![Agile Methodology vs Waterfall Methodology](https://i.imgur.com/Yv6f6UB.png)
 
 ## What Is Product Backlog Exactly? Product Backlog Explained
 
