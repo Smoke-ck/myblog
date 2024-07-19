@@ -2,57 +2,16 @@
 ---
 @import "variables";
 @import "view_transitions";
+@import "utility";
 @import "buttons";
 @import "navbar";
 @import "footer";
 @import "new_carousel";
-@import "index";
-@import "about";
 @import "carousel";
-@import "expertise";
-@import "crew";
-@import "accordion";
 @import "public_404";
-@import "privacy_policy";
-@import "faq";
-@import "team";
-@import "development";
-@import "list-with-images";
-@import "contacts";
-@import "services";
-@import "timeline";
-@import "solutions";
-@import "solutions_cases";
-@import "healthcare_hipaa";
-@import 'web_dev_services';
-@import "taxi_and_transportation";
-@import "insurtech";
-@import "marketplace";
-@import "ecommerce";
-@import "reviews";
 @import "cards_snake_animation";
 @import "blog";
-
-@font-face {
-  font-family: 'Cera Regular';
-  src: url(/assets/fonts/Cera.otf);
-  font-weight: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Cera-Bold';
-  src: url(/assets/fonts/Cera-Bold.otf);
-  font-weight: 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Cera-Medium';
-  src: url(/assets/fonts/Cera-Medium.otf);
-  font-weight: 600;
-  font-display: swap;
-}
+@import "animation_scroll";
 
 @font-face {
   font-family: 'Inria Bold';
@@ -64,7 +23,7 @@
 p { margin: 0; }
 
 body {
-  font-family: 'Cera Regular', serif;
+  font-family: 'Inria Bold';
   min-width: 390px;
 }
 details > summary::-webkit-details-marker { display: none; }
@@ -89,17 +48,12 @@ ul, ol { margin-left: 0; }
 .white-text { color: $white !important; }
 
 .header-1 {
-  color: $black;
   text-transform: uppercase;
   font-size: 2em;
   letter-spacing: 0.6em;
-  margin-right: -.6em;
 }
 
 .header-2 {
-  max-width: 45%;
-  margin: 0 auto;
-  color: $black;
   font-size: 1.8em;
   font-family: 'Inria Bold', serif;
 }
@@ -559,13 +513,8 @@ input#menu {
     line-height: 1.8;
   }
 
-  .description {
-    font-size: 0.8em;
-    color: $black;
-  }
-
+  .description { font-size: 0.8em; }
   .description.with-padding { padding: 0 8%; }
-
   .wrap { padding: 7vh 5vh; }
 }
 
