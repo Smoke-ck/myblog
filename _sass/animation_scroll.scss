@@ -1,0 +1,61 @@
+.animation_scroll_block {
+  background-color: $black;
+  color: white;
+  overflow: clip;
+  padding-bottom: 300px;
+  position: relative;
+
+  .wrapper {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.intro-block {
+  background-color: black;
+  padding: 300px 0;
+  position: relative;
+}
+@keyframes fade-out { to { opacity: 0; } }
+
+.header-background {
+  height: 30%;
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+@keyframes info-block-background-animation {
+  25% { opacity: 1; }
+  100% { opacity: 0; scale: 3; }
+}
+
+@media(prefers-reduced-motion: no-preference) {
+
+  .info-block__image {
+    animation: fade-in linear forwards;
+    animation-timeline: view();
+    animation-range: entry 50px;
+    opacity: 0;
+    scale: .8;
+  }
+  @keyframes fade-in { to { scale: 1; opacity: 1; } }
+}
+
+@supports(animation-timeline: view()) {
+  .animation_scroll_block{
+    .wrapper {
+      animation: fade-out linear forwards;
+      animation-timeline: view();
+      animation-range: exit -200px;
+    }
+  }
+
+  .header-background {
+    animation: info-block-background-animation linear forwards;
+    animation-timeline: view();
+    animation-range: exit;
+  }
+}
