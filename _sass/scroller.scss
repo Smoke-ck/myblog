@@ -1,0 +1,68 @@
+.scroller {
+  --cover-size: 200px;
+
+  .cards {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    white-space: nowrap;
+    height: calc(var(--cover-size) * 2);
+    overflow: scroll;
+    scroll-snap-type: x mandatory;
+
+    li {
+      position: relative;
+      width: var(--cover-size);
+      aspect-ratio: 1;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      view-timeline-name: --li-in-and-out-of-view;
+      view-timeline-axis: inline;
+      animation: linear adjust-z-index both;
+      animation-timeline: --li-in-and-out-of-vie;
+      perspective: 1000px;
+      margin: 0 20px;
+
+      div {
+        background-color: aqua;
+        width: var(--cover-size);
+        height: 200px;
+        -webkit-box-reflect: below 0.5em linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.25));
+        animation: linear rotate-cover both;
+        animation-timeline: --li-in-and-out-of-view;
+      }
+
+      &:last-of-type { margin-right: calc(50% + (var(--cover-size) / 2)); }
+      &:first-of-type { margin-left: calc(50% + (var(--cover-size) / 2)); }
+    }
+
+    li:last-of-type() {
+      margin-right: calc(50% + (var(--cover-size) / 2));
+    }
+  }
+}
+
+@keyframes adjust-z-index {
+  0% {
+    z-index: 1;
+  }
+  50% {
+    z-index: 10;
+  }
+  100% {
+    z-index: 1;
+  }
+}
+
+@keyframes rotate-cover {
+  0% {
+    transform: translateX(0) rotateY(50deg);
+  }
+  50% {
+    transform: rotateY(0deg) translateZ(1em) scale(1.5);
+    background-color: bisque;
+  }
+  100% {
+  transform: translateX(0) rotateY(-50deg);
+  }
+}
