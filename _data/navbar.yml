@@ -32,8 +32,8 @@ links:
     link: /solutions/ecommerce-case
   - section: Travel/Logistic
     link: /solutions/taxi-and-transportation-case
-- page: Reviews
-  link: /reviews
+- page: Carousel
+  link: /carousel
 - page: Scroller
   link: /scroller
 - page: Blog
