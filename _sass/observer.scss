@@ -1,0 +1,38 @@
+.observer_scroll {
+  margin-top: 500px;
+  position: relative;
+}
+
+
+.observer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100px; /* Height of the observer area */
+  background-color: rgba(255, 0, 0, 0.5); /* Optional: For visualization */
+  pointer-events: none; /* Ignore pointer events */
+  z-index: 1;
+  width: 420px;
+
+
+}
+
+.scroller {
+  display: grid;
+  grid-auto-flow: column;
+  overflow-x: scroll;
+  height: 100%;
+  padding: 0;
+  margin: 0 auto;
+  width: 500px;
+}
+
+.card {
+  min-width: 200px;
+  margin: 0 10px;
+  background: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
