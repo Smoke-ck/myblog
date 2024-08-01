@@ -177,18 +177,11 @@
 
 @media (max-width: 768px) {
   .carousel-scroll {
-
-    &__scroller {
-      max-width: 500px;
-
-      // perspective: 700px;
-    }
+    &__scroller { max-width: 500px; }
 
     &__animate-visibility {
       scale: max(calc(30% + (100% - 1% * var(--viewport))), 50%);
-      // transform: none;
-      padding: 15px;
-      // width: 00px;
+      // padding: 15px;
     }
 
   }
@@ -200,7 +193,7 @@
     &__scroller {  max-width: 400px; }
 
     &__animate-visibility {
-      scale: max(calc(20% + (100% - 1% * var(--viewport))), 50%);
+      // scale: max(calc(40% + (100% - 1% * var(--viewport))), 50%);
       // transform: none;
       width: 200px;
     }
