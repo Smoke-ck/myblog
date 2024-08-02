@@ -67,10 +67,9 @@ function setCarousel(scroller) {
 
   function handleWheelEvent(e) {
     e.preventDefault();
-    if (disableScroll) return;
-
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-      const delta = Math.sign(e.deltaX) * scroller.children[0].offsetWidth;
+    const direction = e.shiftKey ? Math.sign(e.deltaY) : Math.sign(e.deltaX);
+     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) {
+      const delta = direction * scroller.children[0].offsetWidth;
       smoothScroll(scroller, scroller.scrollLeft + delta);
     } else {
       window.scrollBy(0, e.deltaY);
@@ -123,30 +122,39 @@ function setCarousel(scroller) {
   scroller.addEventListener('wheel', handleWheelEvent, { passive: false });
   scroller.addEventListener('touchstart', onTouchStart, { passive: false });
   scroller.addEventListener('touchmove', onTouchMove, { passive: false });
+  scroller.addEventListener('touchend', onTouchEnd, { passive: false });
 
-  let startX = 0;
-  let startY = 0;
+  let startX, startY, deltaX, deltaY, currentX, currentY;
   let isDragging = false;
 
   function onTouchStart(event) {
     startX = event.touches[0].pageX;
     startY = event.touches[0].pageY;
     isDragging = true;
+    deltaX = 0;
+    deltaY = 0;
+    currentX = 0;
+    currentY = 0
   }
 
   function onTouchMove(event) {
-    const currentX = event.touches[0].pageX;
-    const currentY = event.touches[0].pageY;
-    const deltaX = currentX - startX;
-    const deltaY = currentY - startY;
+    currentX = event.touches[0].pageX;
+    currentY = event.touches[0].pageY;
+    deltaX = currentX - startX;
+    deltaY = currentY - startY;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY) && isDragging) {
-      const scrollDelta = currentX - startX > 0 ? -1 : 1;
-      smoothScroll(scroller, scroller.scrollLeft + (scrollDelta * scroller.children[0].offsetWidth ))
-    } else {
+    if (Math.abs(deltaX) < Math.abs(deltaY)) {
       window.scrollBy(0, -deltaY);
       isDragging = false;
     }
+  }
+
+  function onTouchEnd() {
+    if (Math.abs(deltaX) > Math.abs(deltaY) && isDragging) {
+      const scrollDelta = currentX - startX > 0 ? -1 : 1;
+      smoothScroll(scroller, scroller.scrollLeft + (scrollDelta * scroller.children[0].offsetWidth ))
+    }
+    isDragging = false;
   }
 }
 
