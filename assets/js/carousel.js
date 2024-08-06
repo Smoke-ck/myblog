@@ -13,6 +13,8 @@ function setCarousel(scroller) {
   let scrollPos = 0;
   let clonesWidth = 0;
   let isScrolling = false;
+  let mobileStep = screen.width <= 768 ? scroller.children[0].offsetWidth/2 : 0;
+  let isDragging = false;
   scroller.innerHTML += scroller.innerHTML;
   const getScrollPos = () => { return scroller.scrollLeft; };
   const setScrollPos = (pos) => { scroller.scrollLeft = pos; };
@@ -25,7 +27,6 @@ function setCarousel(scroller) {
 
   clones = scroller.querySelectorAll('.js-clone');
   getClonesWidth();
-  let mobileStep = screen.width <= 768 ? clones[0].offsetWidth/2 : 0;
   setScrollPos(clonesWidth - mobileStep);
   reCalc();
 
@@ -46,15 +47,14 @@ function setCarousel(scroller) {
   function scrollUpdate() {
     if (!disableScroll) {
       scrollPos = Math.round(getScrollPos() / 100) * 100;
-      let val = screen.width <= 768 ? clones[0].offsetWidth/2 : 0
       if (clonesWidth + scrollPos >= scrollWidth) {
-        setScrollPos(clonesWidth + val);
+        setScrollPos(clonesWidth + mobileStep);
         disableScroll = true;
       } else if (scrollPos == 0 ) {
         setScrollPos(scrollWidth - clonesWidth * 2);
         disableScroll = true;
-      } else if(scrollPos <= val ){
-        setScrollPos(scrollWidth - clonesWidth * 2 + val);
+      } else if(scrollPos <= mobileStep ){
+        setScrollPos(scrollWidth - clonesWidth * 2 + mobileStep);
         disableScroll = true;
       }
     }
@@ -117,6 +117,7 @@ function setCarousel(scroller) {
     } else {
       smoothScroll(scroller, scroller.scrollLeft - scroller.children[1].offsetWidth);
     }
+    isDragging = false;
   });
 
   scroller.addEventListener('wheel', handleWheelEvent, { passive: false });
@@ -124,48 +125,30 @@ function setCarousel(scroller) {
   scroller.addEventListener('touchmove', onTouchMove, { passive: false });
   scroller.addEventListener('touchend', onTouchEnd, { passive: false });
 
-  let startX, startY, deltaX, deltaY, currentX, currentY, toElementPos;
-  let isDragging = false;
+  let startX, deltaX, currentX, halfOfCard;
 
   function onTouchStart(event) {
-    if (event.touches.length > 1) return;
-
     startX = event.touches[0].pageX;
-    startY = event.touches[0].pageY;
-    isDragging = true;
     deltaX = 0;
-    deltaY = 0;
     currentX = 0;
-    currentY = 0;
-    toElementPos = null;
+    halfOfCard = 0;
   }
 
   function onTouchMove(event) {
+    isDragging = true;
     currentX = event.touches[0].pageX;
-    currentY = event.touches[0].pageY;
     deltaX = currentX - startX;
-    deltaY = currentY - startY;
-
     const scrollDelta = currentX - startX > 0 ? -1 : 1;
-    if (toElementPos === null) {
-      toElementPos = scroller.scrollLeft + (scrollDelta * (scroller.children[0].offsetWidth));
-    }
-
-    if (Math.abs(deltaX) > Math.abs(deltaY) && isDragging) {
-      scroller.scrollLeft += scrollDelta * 4;
-    }
-
-    if (Math.abs(deltaX) < Math.abs(deltaY)) {
-      window.scrollBy(0, -deltaY);
-      isDragging = false;
-    }
+    halfOfCard = screen.width <= 768 ? (scroller.children[0].offsetWidth/2) * scrollDelta : 0;
+    scroller.scrollLeft -= deltaX;
+    startX = currentX;
   }
 
   function onTouchEnd() {
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      smoothScroll(scroller, toElementPos);
+    if (isDragging) {
+      smoothScroll(scroller, scroller.children[0].offsetWidth * Math.round(scroller.scrollLeft / scroller.children[0].offsetWidth) + halfOfCard);
+      isDragging = false;
     }
-    isDragging = false;
   }
 }
 
