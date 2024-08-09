@@ -17,11 +17,6 @@
       {% endfor %}
     {% endif %}
 
-    {% if page.scripts %}
-      {% for script in page.scripts %}
-        <script src="/assets/js/{{ script }}.js"></script>
-      {% endfor %}
-    {% endif %}
 
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_css_url }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
