@@ -1,21 +1,18 @@
-window.onload = initCarousels;
+const setCarousel = (scroller) => {
+  if (scroller.children.length <= 4 ) scroller.innerHTML += scroller.innerHTML;
 
-function initCarousels() {
-  const carousels = document.querySelectorAll('[data-scroll="scroller"]');
-  carousels.forEach((element) => setCarousel(element));
-}
+  const items = scroller.querySelectorAll('.animate-visibility');
+  const mobileStep = screen.width <= 768 ? scroller.children[0].offsetWidth / 2 : 0;
 
-function setCarousel(scroller) {
-  let items = scroller.querySelectorAll('.animate-visibility');
   let clones = [];
   let disableScroll = false;
   let scrollWidth = 0;
   let scrollPos = 0;
   let clonesWidth = 0;
-  let mobileStep = screen.width <= 768 ? scroller.children[0].offsetWidth / 2 : 0;
   let isDragging = false;
 
   scroller.innerHTML += scroller.innerHTML;
+
   const getScrollPos = () => scroller.scrollLeft;
   const setScrollPos = (pos) => scroller.scrollLeft = pos;
 
@@ -26,28 +23,29 @@ function setCarousel(scroller) {
   });
 
   clones = scroller.querySelectorAll('.js-clone');
-  getClonesWidth();
-  setScrollPos(clonesWidth - mobileStep);
-  reCalc();
 
-  function getClonesWidth() {
+  const getClonesWidth = () =>{
     clonesWidth = 0;
     clones.forEach(clone => { clonesWidth += clone.offsetWidth; });
     return clonesWidth;
   }
 
-  function reCalc() {
+  const reCalc = () => {
     scrollPos = getScrollPos();
     scrollWidth = scroller.scrollWidth;
     clonesWidth = getClonesWidth();
-    if (scrollPos <= 0) { setScrollPos(1); }
+    if (scrollPos <= 0) return setScrollPos(1);
   }
 
-  function scrollUpdate() {
+  getClonesWidth();
+  setScrollPos(clonesWidth - mobileStep);
+  reCalc();
+
+  const scrollUpdate = () => {
     if (!disableScroll) {
       scrollPos = Math.round(getScrollPos() / 100) * 100;
       if (clonesWidth + scrollPos >= scrollWidth) {
-        setScrollPos(clonesWidth + mobileStep);
+        setScrollPos(clonesWidth);
         disableScroll = true;
       } else if (scrollPos == 0) {
         setScrollPos(scrollWidth - clonesWidth * 2);
@@ -83,60 +81,11 @@ function setCarousel(scroller) {
     isDragging = false;
   });
 
-  if(screen.width >= 768 ) {
-      let isScrolling;
-      scroller.addEventListener('scroll', e => {
-          clearTimeout(isScrolling);
-          isScrolling = setTimeout(() => {
-            onScrollStop();
-          }, 100);
-        },
-        false
-      );
+  let isDesktopScrolling;
+  scroller.addEventListener('scroll', (event) => {
+    const target = event.target;
+    const offsetWidth = target.offsetWidth;
 
-    function onScrollStop() {
-      scroller.scrollTo({
-        left: scroller.children[0].offsetWidth * Math.round(scroller.scrollLeft / scroller.children[0].offsetWidth),
-        behavior: 'smooth'
-      });
-    };
-  }
-
-  scroller.addEventListener('touchstart', onTouchStart, { passive: false });
-  scroller.addEventListener('touchmove', onTouchMove, { passive: false });
-  scroller.addEventListener('touchend', onTouchEnd, { passive: false });
-
-  let startX, deltaX, currentX, halfOfCard;
-
-  function onTouchStart(event) {
-    startX = event.touches[0].pageX;
-    deltaX = 0;
-    currentX = 0;
-    halfOfCard = 0;
-  }
-
-  function onTouchMove(event) {
-    event.preventDefault();
-    isDragging = true;
-    currentX = event.touches[0].pageX;
-    deltaX = currentX - startX;
-    const scrollDelta = currentX - startX > 0 ? -1 : 1;
-    halfOfCard = screen.width <= 768 ? (scroller.children[0].offsetWidth/2) * scrollDelta : 0;
-    scroller.scrollLeft -= deltaX;
-    startX = currentX;
-  }
-
-  function onTouchEnd() {
-    if (isDragging) {
-      scroller.scrollTo({
-        left: scroller.children[0].offsetWidth * Math.round(scroller.scrollLeft / scroller.children[0].offsetWidth) +halfOfCard,
-        behavior: 'smooth'
-      });
-      isDragging = false;
-    }
-  }
-
-  function loop({ target, target: { offsetWidth } }) {
     const checkPos = () => {
       [...target.children].map(e => {
         const toCenter = Math.abs(window.outerWidth / 2 - e.getBoundingClientRect().left - e.getBoundingClientRect().width / 2);
@@ -147,9 +96,76 @@ function setCarousel(scroller) {
         e.style.setProperty('--viewport2', viewport2);
       });
     };
-    requestAnimationFrame(checkPos);
+    checkPos();
     scrollUpdate();
+
+    if(screen.width >= 768 ) {
+      clearTimeout(isDesktopScrolling);
+      isDesktopScrolling = setTimeout(() => {
+        onScrollStop();
+      }, 100);
+
+      function onScrollStop() {
+        scroller.scrollTo({
+          left: scroller.children[0].offsetWidth * Math.round(scroller.scrollLeft / scroller.children[0].offsetWidth),
+          behavior: 'smooth'
+        });
+      };
+    }
+  });
+
+  let startX, deltaX, currentX, halfOfCard, startY, deltaY, currentY, isHorizontalScroll;
+
+  const onTouchStart = (event) => {
+    startX = event.touches[0].pageX;
+    startY = event.touches[0].pageY;
+    deltaX = 0;
+    currentX = 0;
+    currentY = 0;
+    halfOfCard = 0;
+    deltaY = 0;
+    isHorizontalScroll = undefined;
   }
 
-  window.loop = loop;
+  const onTouchMove = (event) => {
+    if (event.touches.length > 1) return;
+
+    isDragging = true;
+    currentX = event.touches[0].pageX;
+    currentY = event.touches[0].pageY;
+    deltaX = currentX - startX;
+    deltaY = currentY - startY;
+    const scrollDelta = currentX - startX > 0 ? -1 : 1;
+    halfOfCard = screen.width <= 768 ? (scroller.children[0].offsetWidth/2) * scrollDelta : 0;
+    if (typeof isHorizontalScroll === 'undefined') isHorizontalScroll = Math.abs(deltaY) > Math.abs(deltaX);
+
+    if (!isHorizontalScroll) {
+      event.preventDefault();
+      scroller.scrollLeft -= deltaX;
+    }
+
+    startX = currentX;
+    startY = currentY;
+  }
+
+  const onTouchEnd = () => {
+    if (!isHorizontalScroll && isDragging) {
+      setTimeout(() => {
+        scroller.scrollTo({
+          left: scroller.children[0].offsetWidth * Math.round(scroller.scrollLeft / scroller.children[0].offsetWidth) + halfOfCard,
+          behavior: 'smooth'
+        });
+      }, 0);
+    }
+    isDragging = false;
+  }
+
+  scroller.addEventListener('touchstart', onTouchStart, { passive: false });
+  scroller.addEventListener('touchmove', onTouchMove, { passive: false });
+  scroller.addEventListener('touchend', onTouchEnd, { passive: false });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const carousels = document.querySelectorAll('[data-scroll="scroller"]');
+  carousels.forEach((element) => setCarousel(element));
+});
