@@ -1,0 +1,30 @@
+---
+layout: default
+title: carousel
+description: Page with animation using scroll, only css
+scripts: [engine-simulator]
+---
+<section class="engine-simulator pt-9">
+  <div class="wrapper">
+    <h1>Engine Simulator</h1>
+
+    <label for="car-select">Choose a car:</label>
+    <select id="car-select">
+      <option value="car">Car</option>
+      <option value="excavator">Excavator</option>
+      <option value="motorcycle">Motorcycle</option>
+      <option value="bus">Bus</option>
+      <option value="locomotive">Locomotive</option>
+    </select>
+
+    <br><br>
+
+    <input type="range" id="speed-range" min="0" max="100" value="0">
+    <p>Speed: <span id="speed-display">0</span></p>
+
+    <br><br>
+    <button id="start-engine">Start Engine</button>
+    <button id="stop-engine">Stop Engine</button>
+  </div>
+
+</section>
