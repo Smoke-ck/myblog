@@ -85,7 +85,7 @@ const updateSound = () => {
   const t6 = interpolate(rpm, 5000, 7000);
   const t7 = interpolate(rpm, 6000, 7000);
   const currentTime = audioCtx.currentTime;
-  const rampDuration = 1.0;
+  const rampDuration = 0.5;
 
   gainNodes[500].gain.cancelScheduledValues(currentTime);
   gainNodes[500].gain.linearRampToValueAtTime(1 - t1, currentTime + rampDuration);
