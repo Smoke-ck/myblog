@@ -17,6 +17,7 @@ class EngineSound {
     this.rpmDisplay = document.getElementById('rpm-display');
     this.startButton = document.getElementById('start-engine');
     this.stopButton = document.getElementById('stop-engine');
+    this.stopButton.disabled = true;
   };
 
   set audioPaths(sounds) {
@@ -37,6 +38,8 @@ class EngineSound {
   };
 
   async startEngine() {
+    this.startButton.disabled = true;
+    this.stopButton.disabled = false;
     await this.loadSounds();
 
     for (const rpm in this.audioSources) {
@@ -62,6 +65,8 @@ class EngineSound {
   };
 
   stopEngine() {
+    this.startButton.disabled = false;
+    this.stopButton.disabled = true;
     for (const rpm in this.audioSources) {
       this.audioSources[rpm].stop();
       this.audioSources[rpm].disconnect();
