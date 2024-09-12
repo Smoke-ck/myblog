@@ -1,37 +1,38 @@
 links:
-- page: About
-  link: /about
-  items:
-  - section: Team
-    link: /about/team
-- page: Expertise
-  link: /expertise
-- page: Services
-  link: /services
-  items:
-  - section: Web Development
-    link: /services/web-development
-  - section: RoR development
-    link: /services/ruby-on-rails-development
-  - section: Mobile App Development
-    link: /services/mobile-app-development
-  - section: Staff Augmentation
-    link: /services/dedicated-teams-cooperation
-  - section: Project Development
-    link: /services/project-development-cooperation
-- page: Solutions
-  link: /solutions
-  items:
-  - section: HealthTech/HIPAA-compliant
-    link: /solutions/healthcare-hipaa-case
-  - section: InsurTech/Cloud Software
-    link: /solutions/insurtech-case
-  - section: B2C Marketplace/SaaS
-    link: /solutions/marketplace-case
-  - section: E-commerce/CRM
-    link: /solutions/ecommerce-case
-  - section: Travel/Logistic
-    link: /solutions/taxi-and-transportation-case
+# Will be removed in the future
+# - page: About
+#   link: /about
+#   items:
+#   - section: Team
+#     link: /about/team
+# - page: Expertise
+#   link: /expertise
+# - page: Services
+#   link: /services
+#   items:
+#   - section: Web Development
+#     link: /services/web-development
+#   - section: RoR development
+#     link: /services/ruby-on-rails-development
+#   - section: Mobile App Development
+#     link: /services/mobile-app-development
+#   - section: Staff Augmentation
+#     link: /services/dedicated-teams-cooperation
+#   - section: Project Development
+#     link: /services/project-development-cooperation
+# - page: Solutions
+#   link: /solutions
+#   items:
+#   - section: HealthTech/HIPAA-compliant
+#     link: /solutions/healthcare-hipaa-case
+#   - section: InsurTech/Cloud Software
+#     link: /solutions/insurtech-case
+#   - section: B2C Marketplace/SaaS
+#     link: /solutions/marketplace-case
+#   - section: E-commerce/CRM
+#     link: /solutions/ecommerce-case
+#   - section: Travel/Logistic
+#     link: /solutions/taxi-and-transportation-case
 - page: Carousel
   link: /carousel
 - page: Scroller
