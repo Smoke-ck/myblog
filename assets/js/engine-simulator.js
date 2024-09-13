@@ -62,6 +62,25 @@ class EngineSound {
         this.audioGains[node].gain.setValueAtTime(0, this.audioContext.currentTime);
       }
     }
+    // This for testing
+    // let latitude = 37.7749;
+    // let longitude = -122.4194;
+    // let speed = 0;
+
+    // setInterval(() => {
+    // console.log('test');
+    // latitude += 0.0001;
+    // longitude += 0.0001;
+    // speed += 1
+    // const geo = {
+    //     coords: {
+    //     latitude,
+    //     longitude,
+    //     speed,
+    //     },
+    // };
+    // this.updateSound(geo);
+    // }, 1000);
   };
 
   stopEngine() {
@@ -77,8 +96,11 @@ class EngineSound {
     this.rpmDisplay.textContent = 500;
   };
 
-  updateSound() {
-    const rpm = parseInt(this.rpmRange.value);
+  updateSound(geo) {
+    const speed = Math.round(geo.coords.speed * 3.6);
+    const maxSpeed = 200;
+    // const rpm = parseInt(this.rpmRange.value);
+    const rpm = 500 +(speed / maxSpeed)*( 7000 - 500);
     this.rpmDisplay.textContent = rpm;
     const interpolate = (rpm, minRpm, maxRpm) => Math.max(0, Math.min(1, (rpm - minRpm) / (maxRpm - minRpm)));
 
@@ -92,35 +114,38 @@ class EngineSound {
     const currentTime = this.audioContext.currentTime;
     const rampDuration = 0.3;
 
-    this.audioGains[500].gain.cancelScheduledValues(currentTime);
-    this.audioGains[500].gain.linearRampToValueAtTime(1 - t1, currentTime + rampDuration);
+    if (this.audioGains[500]) {
+      this.audioGains[500].gain.cancelScheduledValues(currentTime);
+      this.audioGains[500].gain.linearRampToValueAtTime(1 - t1, currentTime + rampDuration);
 
-    this.audioGains[1000].gain.cancelScheduledValues(currentTime);
-    this.audioGains[1000].gain.linearRampToValueAtTime(t1 - t2, currentTime + rampDuration);
+      this.audioGains[1000].gain.cancelScheduledValues(currentTime);
+      this.audioGains[1000].gain.linearRampToValueAtTime(t1 - t2, currentTime + rampDuration);
 
-    this.audioGains[2000].gain.cancelScheduledValues(currentTime);
-    this.audioGains[2000].gain.linearRampToValueAtTime(t2 - t3, currentTime + rampDuration);
+      this.audioGains[2000].gain.cancelScheduledValues(currentTime);
+      this.audioGains[2000].gain.linearRampToValueAtTime(t2 - t3, currentTime + rampDuration);
 
-    this.audioGains[3000].gain.cancelScheduledValues(currentTime);
-    this.audioGains[3000].gain.linearRampToValueAtTime(t3 - t4, currentTime + rampDuration);
+      this.audioGains[3000].gain.cancelScheduledValues(currentTime);
+      this.audioGains[3000].gain.linearRampToValueAtTime(t3 - t4, currentTime + rampDuration);
 
-    this.audioGains[4000].gain.cancelScheduledValues(currentTime);
-    this.audioGains[4000].gain.linearRampToValueAtTime(t4 - t5, currentTime + rampDuration);
+      this.audioGains[4000].gain.cancelScheduledValues(currentTime);
+      this.audioGains[4000].gain.linearRampToValueAtTime(t4 - t5, currentTime + rampDuration);
 
-    this.audioGains[5000].gain.cancelScheduledValues(currentTime);
-    this.audioGains[5000].gain.linearRampToValueAtTime(t5 - t6, currentTime + rampDuration);
+      this.audioGains[5000].gain.cancelScheduledValues(currentTime);
+      this.audioGains[5000].gain.linearRampToValueAtTime(t5 - t6, currentTime + rampDuration);
 
-    this.audioGains[6000].gain.cancelScheduledValues(currentTime);
-    this.audioGains[6000].gain.linearRampToValueAtTime(t6 - t7, currentTime + rampDuration);
+      this.audioGains[6000].gain.cancelScheduledValues(currentTime);
+      this.audioGains[6000].gain.linearRampToValueAtTime(t6 - t7, currentTime + rampDuration);
 
-    this.audioGains[7000].gain.cancelScheduledValues(currentTime);
-    this.audioGains[7000].gain.linearRampToValueAtTime(t7, currentTime + rampDuration);
+      this.audioGains[7000].gain.cancelScheduledValues(currentTime);
+      this.audioGains[7000].gain.linearRampToValueAtTime(t7, currentTime + rampDuration);
+    }
   };
 };
 
 window.onload = async () => {
   const musclcar = new EngineSound();
   await musclcar.init();
+
   musclcar.audioPaths = {
     500: 'assets/sounds/500.wav',
     1000: 'assets/sounds/1000.wav',
@@ -131,11 +156,35 @@ window.onload = async () => {
     6000: 'assets/sounds/6000.wav',
     7000: 'assets/sounds/7000.wav'
   };
-  musclcar.rpmRange.addEventListener('input', () => { musclcar.updateSound() });
+  // musclcar.rpmRange.addEventListener('input', () => { musclcar.updateSound() });
   musclcar.startButton.addEventListener('click', () => { musclcar.startEngine() });
   musclcar.stopButton.addEventListener('click', () => { musclcar.stopEngine() });
-};
 
+  // check geolocation to calculate rpm
+  navigator.geolocation.watchPosition((geo) => {
+    musclcar.updateSound(geo), null, { enableHighAccuracy: true }
+  });
+
+  // distance calculation
+  // function calculateDistance(lat1, lon1, lat2, lon2, unit) {
+  //   if (lat1 === lat2 && lon1 === lon2) { return 0 }
+
+  //   const radlat1 = Math.PI * lat1 / 180;
+  //   const radlat2 = Math.PI * lat2 / 180;
+  //   const theta = lon1 - lon2;
+  //   const radtheta = Math.PI * theta / 180;
+  //   let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+
+  //   if (dist > 1) { dist = 1 }
+
+  //   dist = Math.acos(dist) * 180 / Math.PI;
+  //   dist *= 60 * 1.1515;
+
+  //   (unit === "K") ? dist *= 1.609344 : dist *= 0.8684;
+
+  //   return dist;
+  // }
+};
 
 // functional
 // const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
