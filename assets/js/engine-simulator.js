@@ -77,15 +77,18 @@ let idleTimeout = null;
 const idleTime = 2000;
 const rpmDecreaseSpeed = 50;
 
-const updateSound = (geo) => {
-  const speed = Math.round(geo.coords.speed * 3.6);
+const updateSound = (event) => {
+  let speed, rpm;
   const maxSpeed = 200;
-  // const rpm = parseInt(this.rpmRange.value);
-  const rpm = 500 +(speed / maxSpeed)*( 7000 - 500);
-  rpmDisplay.textContent = rpm;
-    speedometer.textContent = speed;
-  rpmDisplay.textContent = rpm;
 
+  if (event.coords) {
+    speed = Math.round(event.coords.speed * 3.6);
+    rpm = 500 +(speed / maxSpeed)*( 7000 - 500);
+  } else {
+    rpm = parseInt(event.target.value)
+  }
+  rpmDisplay.textContent = rpm;
+  speedometer.textContent = speed;
   const interpolate = (rpm, minRpm, maxRpm) => Math.max(0, Math.min(1, (rpm - minRpm) / (maxRpm - minRpm)));
 
   const t1 = interpolate(rpm, 500, 1000);
@@ -129,7 +132,7 @@ window.onload = async () => {
   await loadSounds();
 };
 
-// rpmRange.addEventListener('input', updateSound );
+rpmRange.addEventListener('input', updateSound );
 startButton.addEventListener('click', startEngine);
 stopButton.addEventListener('click', stopEngine);
 
