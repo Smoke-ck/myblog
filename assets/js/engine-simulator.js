@@ -5,6 +5,7 @@ class EngineSound {
   #audioGains = {};
   #rpmRange = null;
   #rpmDisplay = null;
+  #speedDisplay = null;
   #startButton = null;
   #stopButton = null;
   #sounds = {};
@@ -15,6 +16,7 @@ class EngineSound {
     this.audioGains = {};
     this.rpmRange = document.getElementById('rpm-range');
     this.rpmDisplay = document.getElementById('rpm-display');
+    this.speedDisplay = document.getElementById('speed');;
     this.startButton = document.getElementById('start-engine');
     this.stopButton = document.getElementById('stop-engine');
     this.stopButton.disabled = true;
@@ -102,6 +104,7 @@ class EngineSound {
     // const rpm = parseInt(this.rpmRange.value);
     const rpm = 500 +(speed / maxSpeed)*( 7000 - 500);
     this.rpmDisplay.textContent = rpm;
+    this.speedDisplay.textContent = speed;
     const interpolate = (rpm, minRpm, maxRpm) => Math.max(0, Math.min(1, (rpm - minRpm) / (maxRpm - minRpm)));
 
     const t1 = interpolate(rpm, 500, 1000);
