@@ -6,7 +6,16 @@ scripts: [engine-simulator]
 ---
 <section class="engine-simulator pt-9">
   <div class="wrapper">
-    <br><br><br>
+    <br><br>
+
+    <label for="car-select">Choose a car:</label>
+    <select id="car-select">
+      <option value="musclcar">Musclcar</option>
+      <option value="sportcar">Sportcar</option>
+      <option value="jdm">JDM</option>
+    </select>
+
+    <br><br>
 
     <label for="rpm-range">RPM:</label>
     <input type="range" id="rpm-range" min="600" max="7000" step="10" value="600" style="width: 300px;" disabled="true">

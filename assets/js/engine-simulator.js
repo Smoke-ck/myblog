@@ -8,6 +8,7 @@ const rpmDisplay = document.getElementById('rpm-display');
 const startButton = document.getElementById('start-engine');
 const stopButton = document.getElementById('stop-engine');
 const speedometer = document.getElementById('speedometer');
+const carSelect = document.getElementById('car-select');
 
 const loadCarSound = async (url) => {
   const response = await fetch(url);
@@ -15,17 +16,17 @@ const loadCarSound = async (url) => {
   return await audioCtx.decodeAudioData(arrayBuffer);
 };
 
-const loadSounds = async () => {
+const loadSounds = async (folder) => {
   stopButton.disabled = true;
   const sounds = {
-    600: 'assets/sounds/600.wav',
-    1000: 'assets/sounds/1000.wav',
-    2000: 'assets/sounds/2000.wav',
-    3000: 'assets/sounds/3000.wav',
-    4000: 'assets/sounds/4000.wav',
-    5000: 'assets/sounds/5000.wav',
-    6000: 'assets/sounds/6000.wav',
-    7000: 'assets/sounds/7000.wav'
+    600: `assets/sounds/${folder}/600.wav`,
+    1000: `assets/sounds/${folder}/1000.wav`,
+    2000: `assets/sounds/${folder}/2000.wav`,
+    3000: `assets/sounds/${folder}/3000.wav`,
+    4000: `assets/sounds/${folder}/4000.wav`,
+    5000: `assets/sounds/${folder}/5000.wav`,
+    6000: `assets/sounds/${folder}/6000.wav`,
+    7000: `assets/sounds/${folder}/7000.wav`
 };
 
   for (const rpm in sounds) {
@@ -125,7 +126,7 @@ function checkKey(event) {
 }
 
 window.onload = async () => {
-  await loadSounds();
+  await loadSounds(carSelect.options[0].value);
 };
 
 rpmRange.addEventListener('input', updateSound );
@@ -133,3 +134,9 @@ startButton.addEventListener('click', startEngine);
 stopButton.addEventListener('click', stopEngine);
 navigator.geolocation.watchPosition(updateSound, null, { enableHighAccuracy: !0 });
 document.addEventListener('keydown', checkKey);
+
+carSelect.addEventListener('change', async (e) => {
+  currentCar = e.target.value;
+  stopEngine();
+  await loadSounds(currentCar);
+});
