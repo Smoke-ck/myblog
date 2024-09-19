@@ -5,7 +5,7 @@ header {
   position: fixed;
   z-index: 5;
   width: 100%;
-  background-color: $white;
+  background-color: #0c0e10;
   box-shadow: 0px 4px 4px 0px rgba(#000, .25);
   view-transition-name: header;
 
@@ -36,13 +36,12 @@ header {
 
   &__link {
     margin: 0 1.5vw;
-    color: $black;
+    color: white;
     font-size: 0.8em;
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: 0.4em;
     cursor: pointer;
-
   }
 
   &__link-contact {

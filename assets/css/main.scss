@@ -12,6 +12,7 @@
 @import "blog";
 @import "animation_scroll";
 @import "scroller";
+@import "engine";
 
 @font-face {
   font-family: 'Inria Bold';
@@ -30,7 +31,7 @@ details > summary::-webkit-details-marker { display: none; }
 
 a:hover { text-decoration: none !important; }
 
-a:visited { color: $black; }
+a:visited { color: $white; }
 
 ul, ol { margin-left: 0; }
 
