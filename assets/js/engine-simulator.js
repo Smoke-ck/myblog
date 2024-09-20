@@ -2,6 +2,9 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let sourceNodes = {};
 let gainNodes = {};
 let audioBuffers = {};
+let startNode = null;
+let startGain = null;
+let startAudioBuffer = null;
 
 const rpmRange = document.getElementById('rpm-range');
 const rpmDisplay = document.getElementById('rpm-display');
@@ -18,6 +21,7 @@ const loadCarSound = async (url) => {
 
 const loadSounds = async (folder) => {
   stopButton.disabled = true;
+  const startEngine = 'assets/sounds/starter.wav'
   const sounds = {
     600: `assets/sounds/${folder}/600.wav`,
     1000: `assets/sounds/${folder}/1000.wav`,
@@ -33,33 +37,52 @@ const loadSounds = async (folder) => {
     const audioBuffer = await loadCarSound(sounds[rpm]);
     audioBuffers[rpm] = audioBuffer;
   }
+
+  startAudioBuffer = await loadCarSound(startEngine);
 };
+
+const setAudioBuffer = () => audioCtx.createBufferSource();
+const createGain = () => audioCtx.createGain();
 
 const startEngine = () => {
   startButton.disabled = true;
   stopButton.disabled = false;
   rpmRange.disabled = false;
 
-  for (const rpm in audioBuffers) {
-    const bufferSource = audioCtx.createBufferSource();
-    bufferSource.buffer = audioBuffers[rpm];
-    const gainNode = audioCtx.createGain();
-    bufferSource.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    bufferSource.loop = true;
-    bufferSource.start();
+  const bufferSource = setAudioBuffer();
+  bufferSource.buffer = startAudioBuffer;
+  const gainNode = createGain();
+  bufferSource.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  bufferSource.loop = false;
+  bufferSource.start();
 
-    sourceNodes[rpm] = bufferSource;
-    gainNodes[rpm] = gainNode;
-  }
+  startNode = bufferSource;
+  startGain = gainNode;
+  startGain.gain.setValueAtTime(1, audioCtx.currentTime);
 
-  for (const node in gainNodes) {
-    if (node === '600') {
-      gainNodes[node].gain.setValueAtTime(1, audioCtx.currentTime);
-    } else {
-      gainNodes[node].gain.setValueAtTime(0, audioCtx.currentTime);
+  setTimeout(() => {
+    for (const rpm in audioBuffers) {
+      const bufferSource = setAudioBuffer();
+      bufferSource.buffer = audioBuffers[rpm];
+      const gainNode = createGain();
+      bufferSource.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      bufferSource.loop = true;
+      bufferSource.start();
+
+      sourceNodes[rpm] = bufferSource;
+      gainNodes[rpm] = gainNode;
     }
-   }
+
+    for (const node in gainNodes) {
+      if (node === '600') {
+        gainNodes[node].gain.setValueAtTime(1, audioCtx.currentTime);
+      } else {
+        gainNodes[node].gain.setValueAtTime(0, audioCtx.currentTime);
+      }
+     }
+  }, 600);
 };
 
 const stopEngine = () => {
