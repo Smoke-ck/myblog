@@ -2,7 +2,7 @@
 layout: default
 title: carousel
 description: Page with animation using scroll, only css
-scripts: [carousel2]
+scripts: [carousel]
 ---
 <section class="carousel-page">
   <div class="wrapper">
@@ -10,7 +10,7 @@ scripts: [carousel2]
   </div>
 
   <section class="carousel pt-9">
-    <div id="page-carousel" data-scroll="scroller" class="carousel-scroll__scroller" onscroll='loop(event)'>
+    <div id="page-carousel" data-scroll="scroller" class="carousel-scroll__scroller">
       {% for item in site.data.testimonials.all %}
         <div class="carousel-scroll__animate-visibility animate-visibility testimonials">
           <h2 class="animate-visibility__title">{{ item.title }}</h2>
