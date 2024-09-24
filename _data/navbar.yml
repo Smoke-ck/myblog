@@ -33,6 +33,8 @@ links:
 #     link: /solutions/ecommerce-case
 #   - section: Travel/Logistic
 #     link: /solutions/taxi-and-transportation-case
+- page: Engine Sim V2
+  link: /engine-simulator-v2
 - page: Carousel
   link: /carousel
 - page: Scroller
