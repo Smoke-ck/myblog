@@ -321,21 +321,23 @@ document.addEventListener("DOMContentLoaded",	function() {
   };
 
   const loadSounds = async (folder) => {
-    const sounds = {
-      600: `assets/sounds/${folder}/600.wav`,
-      1000: `assets/sounds/${folder}/1000.wav`,
-      2000: `assets/sounds/${folder}/2000.wav`,
-      3000: `assets/sounds/${folder}/3000.wav`,
-      4000: `assets/sounds/${folder}/4000.wav`,
-      5000: `assets/sounds/${folder}/5000.wav`,
-      6000: `assets/sounds/${folder}/6000.wav`,
-      7000: `assets/sounds/${folder}/7000.wav`
-    };
+    const startEngine = 'assets/sounds/starter.wav'
+      const sounds = {
+        600: `assets/sounds/${folder}/600.wav`,
+        1000: `assets/sounds/${folder}/1000.wav`,
+        2000: `assets/sounds/${folder}/2000.wav`,
+        3000: `assets/sounds/${folder}/3000.wav`,
+        4000: `assets/sounds/${folder}/4000.wav`,
+        5000: `assets/sounds/${folder}/5000.wav`,
+        6000: `assets/sounds/${folder}/6000.wav`,
+        7000: `assets/sounds/${folder}/7000.wav`
+      };
 
-    for (const rpm in sounds) {
-      const audioBuffer = await loadCarSound(sounds[rpm]);
-      audioBuffers[rpm] = audioBuffer;
-    }
+      for (const rpm in sounds) {
+        const audioBuffer = await loadCarSound(sounds[rpm]);
+        audioBuffers[rpm] = audioBuffer;
+      }
+    startAudioBuffer = await loadCarSound(startEngine);
   };
 
   const setAudioBuffer = () => audioCtx.createBufferSource();
@@ -382,46 +384,47 @@ document.addEventListener("DOMContentLoaded",	function() {
 	var loader = document.querySelector('.loader');
 	var btnVolume = document.querySelector('.btn-volume');
 
-  function startEngine() {
+  async function startEngine() {
+    await loadSounds('sportcar')
 
-  const bufferSource = setAudioBuffer();
-  bufferSource.buffer = startAudioBuffer;
-  const gainNode = createGain();
-  bufferSource.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-  bufferSource.loop = false;
-  bufferSource.start();
+    const bufferSource = setAudioBuffer();
+    bufferSource.buffer = startAudioBuffer;
+    const gainNode = createGain();
+    bufferSource.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    bufferSource.loop = false;
+    bufferSource.start();
 
-  startNode = bufferSource;
-  startGain = gainNode;
-  startGain.gain.setValueAtTime(1, audioCtx.currentTime);
+    startNode = bufferSource;
+    startGain = gainNode;
+    startGain.gain.setValueAtTime(1, audioCtx.currentTime);
 
-  setTimeout(() => {
-    for (const rpm in audioBuffers) {
-      const bufferSource = setAudioBuffer();
-      bufferSource.buffer = audioBuffers[rpm];
-      const gainNode = createGain();
-      bufferSource.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      bufferSource.loop = true;
-      bufferSource.start();
+    setTimeout(() => {
 
-      sourceNodes[rpm] = bufferSource;
-      gainNodes[rpm] = gainNode;
-    }
+      for (const rpm in audioBuffers) {
+        const bufferSource = setAudioBuffer();
+        bufferSource.buffer = audioBuffers[rpm];
+        const gainNode = createGain();
+        bufferSource.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        bufferSource.loop = true;
+        bufferSource.start();
 
-    for (const node in gainNodes) {
-      if (node === '600') {
-        gainNodes[node].gain.setValueAtTime(1, audioCtx.currentTime);
-      } else {
-        gainNodes[node].gain.setValueAtTime(0, audioCtx.currentTime);
+        sourceNodes[rpm] = bufferSource;
+        gainNodes[rpm] = gainNode;
       }
-     }
-  }, 600);
+
+      for (const node in gainNodes) {
+        if (node === '600') {
+          gainNodes[node].gain.setValueAtTime(1, audioCtx.currentTime);
+        } else {
+          gainNodes[node].gain.setValueAtTime(0, audioCtx.currentTime);
+        }
+      }
+    }, 600);
   }
 
   btnVolume.addEventListener('click', async () => {
-    await loadSounds('sportcar');
     startEngine();
   });
 });
