@@ -96,8 +96,8 @@ const stopEngine = () => {
   }
   sourceNodes = {};
   gainNodes = {};
-  rpmRange.value = 600;
-  rpmDisplay.textContent = 600;
+  rpmRange.value = 0;
+  rpmDisplay.textContent = 0;
 };
 
 const updateSound = (event) => {
@@ -106,11 +106,11 @@ const updateSound = (event) => {
 
   if (event.coords) {
     speed = Math.round(event.coords.speed * 3.6);
-    rpm = 600 +(speed / maxSpeed)*( 7000 - 600);
   } else {
-    rpm = parseInt(event.target.value)
+    speed = parseInt(event.target.value);
   }
-  rpmDisplay.textContent = rpm;
+  rpm = 600 + (speed / maxSpeed)*( 7000 - 600);
+  rpmDisplay.textContent = Math.trunc(rpm);
   speedometer.textContent = speed;
   const interpolate = (rpm, minRpm, maxRpm) => Math.max(0, Math.min(1, (rpm - minRpm) / (maxRpm - minRpm)));
 
@@ -122,7 +122,7 @@ const updateSound = (event) => {
   const t6 = interpolate(rpm, 5000, 6000);
   const t7 = interpolate(rpm, 6000, 7000);
   const currentTime = audioCtx.currentTime;
-  const rampDuration = 0.3;
+  const rampDuration = 0.5;
   const keys =  Object.keys(sourceNodes);
   const transitions = [1 - t1, t1 - t2, t2 - t3, t3 - t4, t4 - t5, t5 - t6, t6 - t7, t7];
 
@@ -139,11 +139,11 @@ function checkKey(event) {
   if (rpmRange.disabled === true ) return
 
   if (event.keyCode == '38') {
-    rpmRange.value = Math.min(parseInt(rpmRange.value) + 20, 7000);
+    rpmRange.value = Math.min(parseInt(rpmRange.value) + 1, 200);
     updateSound({ target: rpmRange });
   }
   else if (event.keyCode == '40') {
-    rpmRange.value = Math.max(parseInt(rpmRange.value) - 20, 600);
+    rpmRange.value = Math.max(parseInt(rpmRange.value) - 1, 0);
     updateSound({ target: rpmRange });
   }
 }
