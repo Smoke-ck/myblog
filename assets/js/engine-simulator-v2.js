@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded",	function() {
 	var btnVolume = document.querySelector('.btn-volume');
 
   async function startEngine() {
-    await loadSounds('sportcar')
+    await loadSounds('car1')
 
     const bufferSource = setAudioBuffer();
     bufferSource.buffer = startAudioBuffer;
