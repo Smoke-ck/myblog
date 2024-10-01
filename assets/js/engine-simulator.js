@@ -149,7 +149,7 @@ function checkKey(event) {
 }
 
 window.onload = async () => {
-  await loadSounds(carSelect.options[0].value);
+  await loadSounds(carSelect.value);
 };
 
 rpmRange.addEventListener('input', updateSound );
