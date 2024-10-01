@@ -159,7 +159,7 @@ navigator.geolocation.watchPosition(updateSound, null, { enableHighAccuracy: !0 
 document.addEventListener('keydown', checkKey);
 
 carSelect.addEventListener('change', async (e) => {
-  currentCar = e.target.value;
   stopEngine();
+  currentCar = e.target.value;
   await loadSounds(currentCar);
 });
