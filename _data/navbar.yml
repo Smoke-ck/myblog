@@ -33,8 +33,6 @@ links:
 #     link: /solutions/ecommerce-case
 #   - section: Travel/Logistic
 #     link: /solutions/taxi-and-transportation-case
-- page: Engine Sim V2
-  link: /engine-simulator-v2
 - page: Carousel
   link: /carousel
 - page: Scroller
@@ -45,6 +43,11 @@ links:
   link: /animation_scroll
 - page: Engine Simulator
   link: /engine-simulator
+  items:
+  - section: Engine Dashboard
+    link: /engine-dashboard
+  - section: Envine Sim V2
+    link: /engine-simulator-v2
 reviews: Reviews
 faq: FAQ
 blog: Blog
