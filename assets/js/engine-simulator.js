@@ -45,11 +45,11 @@ const setAudioBuffer = () => audioCtx.createBufferSource();
 const createGain = () => audioCtx.createGain();
 
 const startEngine = async () => {
-  await loadSounds(carSelect.value);
   startButton.disabled = true;
+  await loadSounds(carSelect.value);
+
   stopButton.disabled = false;
   rpmRange.disabled = false;
-
   const bufferSource = setAudioBuffer();
   bufferSource.buffer = startAudioBuffer;
   const gainNode = createGain();
