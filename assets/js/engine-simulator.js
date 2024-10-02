@@ -94,8 +94,15 @@ const stopEngine = () => {
     sourceNodes[rpm].stop();
     sourceNodes[rpm].disconnect();
   }
+
+  if (startNode) {
+    startNode.stop();
+    startNode.disconnect();
+  }
+
   sourceNodes = {};
   gainNodes = {};
+  audioBuffers = {};
   rpmRange.value = 0;
   rpmDisplay.textContent = 0;
 };
