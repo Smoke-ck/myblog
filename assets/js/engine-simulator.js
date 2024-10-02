@@ -44,7 +44,8 @@ const loadSounds = async (folder) => {
 const setAudioBuffer = () => audioCtx.createBufferSource();
 const createGain = () => audioCtx.createGain();
 
-const startEngine = () => {
+const startEngine = async () => {
+  await loadSounds(carSelect.value);
   startButton.disabled = true;
   stopButton.disabled = false;
   rpmRange.disabled = false;
@@ -105,6 +106,7 @@ const stopEngine = () => {
   audioBuffers = {};
   rpmRange.value = 0;
   rpmDisplay.textContent = 0;
+  speedometer.textContent = 0;
 };
 
 const updateSound = (event) => {
@@ -155,18 +157,9 @@ function checkKey(event) {
   }
 }
 
-window.onload = async () => {
-  await loadSounds(carSelect.value);
-};
-
 rpmRange.addEventListener('input', updateSound );
 startButton.addEventListener('click', startEngine);
 stopButton.addEventListener('click', stopEngine);
 navigator.geolocation.watchPosition(updateSound, null, { enableHighAccuracy: !0 });
 document.addEventListener('keydown', checkKey);
-
-carSelect.addEventListener('change', async (e) => {
-  stopEngine();
-  currentCar = e.target.value;
-  await loadSounds(currentCar);
-});
+carSelect.addEventListener('change', stopEngine);
