@@ -167,6 +167,7 @@ document.addEventListener("DOMContentLoaded",	function() {
 	}
 
 	function keyUp(e) {
+
 		e = e || window.event;
 
     updateSpeedFromGeolocation(e);
@@ -177,7 +178,6 @@ document.addEventListener("DOMContentLoaded",	function() {
 			isBraking = false;
 		}
 	}
-
 	// VEHICLE CONFIG
 
 	let
@@ -221,6 +221,37 @@ document.addEventListener("DOMContentLoaded",	function() {
       isKeyboard = false;
     } else {
       isKeyboard = true;
+    }
+  }
+
+  const runButton = document.querySelector('.btn-run');
+  runButton.addEventListener("mousedown", function(e) {
+    isAccelerating = true;
+    isBraking = true;
+    isKeyboard = true
+    simulateAcceleration();
+  });
+
+  runButton.addEventListener("mouseup", function(e) {
+    isAccelerating = false;
+    isBraking = false;
+  });
+
+  runButton.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    isAccelerating = true;
+    isBraking = true;
+    isKeyboard = true;
+    simulateAcceleration();
+  },{ passive: false });
+
+  document.addEventListener("touchend", () => {
+    isAccelerating = false;
+  });
+
+  function simulateAcceleration() {
+    if (isAccelerating) {
+        setTimeout(simulateAcceleration, 0);
     }
   }
 
@@ -337,7 +368,8 @@ document.addEventListener("DOMContentLoaded",	function() {
     }, 600);
   }
 
-  btnVolume.addEventListener('click', async () => {
+  btnVolume.addEventListener('click', async (e) => {
+    e.target.disabled = true;
     startEngine();
   });
 

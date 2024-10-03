@@ -20,6 +20,7 @@ $needle-axle-color: #eee;
 $needle-axle-size: 15%;
 $needle-axle-size-big: 37.5%;
 $label-color: $grad-color;
+.engine-sim-v2 { user-select: none; }
 
 .dashboard {
 	display: inline-block;
@@ -242,10 +243,7 @@ $label-color: $grad-color;
 		display: inline-block;
 	}
 }
-.btn-volume {
-	position: fixed;
-	top: 10rem;
-	right: 20rem;
+.btn-volume, .btn-run {
 	height: 2.53rem;
 	line-height: 2rem;
 	background: transparent;
