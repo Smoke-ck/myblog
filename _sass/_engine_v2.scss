@@ -21,11 +21,8 @@ $needle-axle-size: 15%;
 $needle-axle-size-big: 37.5%;
 $label-color: $grad-color;
 .engine-sim-v2 { user-select: none; }
+.dashboard { padding: 2rem; }
 
-.dashboard {
-	display: inline-block;
-	padding: 2rem;
-}
 .meter {
 	display: inline-block;
 	position: relative;
