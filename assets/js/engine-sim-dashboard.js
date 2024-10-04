@@ -187,9 +187,9 @@ document.addEventListener("DOMContentLoaded",	function() {
 
 	// MOTOR CONFIG
 	let
-			rpmIdle = 600,
+			rpmIdle = 0,
 			rpmMax = 7000,
-			torqueVal = 20, // in m.kg
+			torqueVal = 30, // in m.kg
 			torque,
 			rpm = 0,
 			isAccelerating = false,
@@ -200,10 +200,6 @@ document.addEventListener("DOMContentLoaded",	function() {
 		let torque = torqueVal + (rpm / rpmMax) ;
 		return torque;
 	};
-
-	function kmh2ms(speed) {	// Km/h to m/s
-		return speed / 3.6;
-	}
 
 	// MAIN LOOP
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -225,6 +221,8 @@ document.addEventListener("DOMContentLoaded",	function() {
   }
 
   const runButton = document.querySelector('.btn-run');
+  runButton.disabled = true;
+
   runButton.addEventListener("mousedown", function(e) {
     isAccelerating = true;
     isBraking = true;
@@ -259,17 +257,11 @@ document.addEventListener("DOMContentLoaded",	function() {
     window.requestAnimationFrame(engineLoop);
     torque = isAccelerating && rpm < rpmMax ? torqueByRpm(rpm) : -(rpm * rpm / 1000000);
     brakeTorque = isBraking ? brakeTorqueMax : 0;
-    if (isKeyboard) {
-      speed += torque / 10 - brakeTorque;
-    }
-
+    if (isKeyboard) { speed += torque / 10 - brakeTorque; }
     if (speed < 0) { speed = 0; }
-
     rpm = rpmIdle + (speed / 200)*( rpmMax - rpmIdle);
-
     speedMeter.setValue(speed);
     rpmMeter.setValue(rpm);
-
     if (sourceNodes[600]) { updateSound(rpm); }
   })();
 
@@ -313,7 +305,6 @@ document.addEventListener("DOMContentLoaded",	function() {
     const t6 = interpolate(rpm, 5000, 6000);
     const t7 = interpolate(rpm, 6000, 7000);
     const currentTime = audioCtx.currentTime;
-    const rampDuration = 0.3;
     const keys =  Object.keys(sourceNodes);
     const transitions = [1 - t1, t1 - t2, t2 - t3, t3 - t4, t4 - t5, t5 - t6, t6 - t7, t7];
 
@@ -326,9 +317,10 @@ document.addEventListener("DOMContentLoaded",	function() {
     }
   };
 
-	let btnVolume = document.querySelector('.btn-volume');
+  const startStop = document.querySelector('#startStopButton');
+  const buttonText = document.querySelector('.button-text');
 
-  async function startEngine() {
+  const startEngine = async ()  => {
     await loadSounds('car1')
 
     const bufferSource = setAudioBuffer();
@@ -365,12 +357,40 @@ document.addEventListener("DOMContentLoaded",	function() {
           gainNodes[node].gain.setValueAtTime(0, audioCtx.currentTime);
         }
       }
+      runButton.disabled = false;
+      rpmIdle = 600;
+      startStop.disabled = false;
     }, 600);
   }
 
-  btnVolume.addEventListener('click', async (e) => {
-    e.target.disabled = true;
-    startEngine();
+  const stopEngine = () => {
+    for (const rpm in sourceNodes) {
+      sourceNodes[rpm].stop();
+      sourceNodes[rpm].disconnect();
+    }
+
+    if (startNode) {
+      startNode.stop();
+      startNode.disconnect();
+    }
+
+    sourceNodes = {};
+    gainNodes = {};
+    audioBuffers = {};
+    runButton.disabled = true;
+    speed = 0;
+    rpmIdle = 0;
+  };
+
+  startStop.addEventListener('change', (e) => {
+    if(e.target.checked) {
+      startEngine();
+      buttonText.textContent = 'Stop'
+      e.target.disabled = true;
+    } else {
+      stopEngine();
+      buttonText.textContent = 'Start'
+    }
   });
 
   navigator.geolocation.watchPosition(updateSpeedFromGeolocation, null, { enableHighAccuracy: !0 });
