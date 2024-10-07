@@ -212,7 +212,8 @@ document.addEventListener("DOMContentLoaded",	function() {
   let isKeyboard = false;
 
   function updateSpeedFromGeolocation(event) {
-    if (event.coords) {
+
+    if (event.coords && !isAccelerating) {
       speed = Math.round(event.coords.speed * 3.6);
       isKeyboard = false;
     } else {
