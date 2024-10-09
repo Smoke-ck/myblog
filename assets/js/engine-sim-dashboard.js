@@ -221,10 +221,11 @@ document.addEventListener("DOMContentLoaded",	function() {
     }
   }
 
-  const runButton = document.querySelector('.btn-run');
+  const runButton = document.querySelector('.accelerator');
   runButton.disabled = true;
 
   runButton.addEventListener("mousedown", function(e) {
+    e.target.style.transform = "rotateX(30deg)"
     isAccelerating = true;
     isBraking = true;
     isKeyboard = true
@@ -232,19 +233,28 @@ document.addEventListener("DOMContentLoaded",	function() {
   });
 
   runButton.addEventListener("mouseup", function(e) {
+    e.target.style.transform = "rotateX(0deg)"
+    isAccelerating = false;
+    isBraking = false;
+  });
+
+  runButton.addEventListener("mouseleave", function(e) {
+    e.target.style.transform = "rotateX(0deg)"
     isAccelerating = false;
     isBraking = false;
   });
 
   runButton.addEventListener("touchstart", (e) => {
     e.preventDefault();
+    e.target.style.transform = "rotateX(30deg)"
     isAccelerating = true;
     isBraking = true;
     isKeyboard = true;
     simulateAcceleration();
   },{ passive: false });
 
-  document.addEventListener("touchend", () => {
+  document.addEventListener("touchend", (e) => {
+    e.target.style.transform = "rotateX(0deg)"
     isAccelerating = false;
   });
 
