@@ -329,7 +329,9 @@ document.addEventListener("DOMContentLoaded",	function() {
   };
 
   const startStop = document.querySelector('#startStopButton');
-  const buttonText = document.querySelector('.button-text');
+  const buttonText = document.querySelector('.toggle-start-stop__text');
+  const buttonIndicator = document.querySelector('.toggle-start-stop__indicator');
+
 
   const startEngine = async ()  => {
     await loadSounds('car1')
@@ -371,6 +373,8 @@ document.addEventListener("DOMContentLoaded",	function() {
       runButton.disabled = false;
       rpmIdle = 600;
       startStop.disabled = false;
+      buttonText.style = 'color: #e6bf79;'
+      buttonIndicator.style = 'background: #e6bf79;'
     }, 600);
   }
 
@@ -385,22 +389,26 @@ document.addEventListener("DOMContentLoaded",	function() {
       startNode.disconnect();
     }
 
-    sourceNodes = {};
-    gainNodes = {};
-    audioBuffers = {};
-    runButton.disabled = true;
-    speed = 0;
-    rpmIdle = 0;
+    setTimeout(() => {
+      sourceNodes = {};
+      gainNodes = {};
+      audioBuffers = {};
+      runButton.disabled = true;
+      buttonText.style = 'color: white;'
+      buttonIndicator.style = 'background: white;'
+      speed = 0;
+      rpmIdle = 0;
+    }, 300);
   };
 
   startStop.addEventListener('change', (e) => {
+    buttonText.style = 'transform: scale(0.95);'
+
     if(e.target.checked) {
       startEngine();
-      buttonText.textContent = 'Stop'
       e.target.disabled = true;
     } else {
       stopEngine();
-      buttonText.textContent = 'Start'
     }
   });
 
