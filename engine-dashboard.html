@@ -5,23 +5,26 @@ description: Page with animation using scroll, only css
 scripts: [engine-sim-dashboard]
 ---
 
-<section class="engine-sim-v2 pt-9">
-	<div class="wrapper">
-		<div class="dashboard">
-			<div class="meter meter--rpm meter--big-label"></div>
-			<div class="meter meter--speed"></div>
-		</div>
+<section class="engine-dashboard">
+	<canvas id="stars"></canvas>
 
-		<label class="toggle-start-stop">
-			<input type="checkbox" id="startStopButton">
-			<div class="toggle-start-stop__text">
-				<span class="toggle-start-stop__indicator"></span>
-				<span>ENGINE</span>
-				START<br>STOP</div>
-		</label>
-
-			<div class="pedal pt-4">
-				<button class="accelerator"></button >
+	<div class="engine-sim-v2 pt-9">
+		<div class="wrapper">
+			<div class="dashboard">
+				<div class="meter meter--rpm meter--big-label"></div>
+				<div class="meter meter--speed"></div>
 			</div>
+
+			<label class="toggle-start-stop">
+				<input type="checkbox" id="startStopButton">
+				<div class="toggle-start-stop__text">
+					<span class="toggle-start-stop__indicator"></span>
+					<span>ENGINE</span>
+					START<br>STOP</div>
+			</label>
+				<div class="pedal pt-4">
+					<button class="accelerator"></button >
+				</div>
+		</div>
 	</div>
 </section>
