@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let starIndex = 0;
   let numStars = 0;
   let speed = 0.2;
-  let starsToDraw = 300;
+  let starsToDraw = 100;
 
   class MovingStar {
     constructor() {
