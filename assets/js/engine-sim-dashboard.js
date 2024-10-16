@@ -1,130 +1,5 @@
-
-
-// METER
-
-let Meter = function Meter($elm, config) {
-
-  // DOM
-	let $needle, $value;
-
-	// Others
-
-	let steps = (config.valueMax - config.valueMin) / config.valueStep,
-			angleStep = (config.angleMax - config.angleMin) / steps;
-
-	let margin = 10; // in %
-	let angle = 0; // in degrees
-
-	let value2angle = function(value) {
-		let angle = ((value / (config.valueMax - config.valueMin)) * (config.angleMax - config.angleMin) + config.angleMin);
-
-		return angle;
-	};
-
-	this.setValue = function(v) {
-		$needle.style.transform = "translate3d(-50%, 0, 0) rotate(" + Math.round(value2angle(v)) + "deg)";
-		$value.innerHTML = config.needleFormat(v);
-	};
-
-	let switchLabel = function(e) {
-		e.target.closest(".meter").classList.toggle('meter--big-label');
-	};
-
-	let makeElement = function(parent, className, innerHtml, style) {
-
-		let	e = document.createElement('div');
-		e.className = className;
-
-		if (innerHtml) {
-			e.innerHTML = innerHtml;
-		}
-
-		if (style) {
-			for (var prop in style) {
-				e.style[prop] = style[prop];
-			}
-		}
-
-		parent.appendChild(e);
-
-		return e;
-	};
-
-	// Label unit
-	makeElement($elm, "label label-unit", config.valueUnit);
-
-	for (let n=0; n < steps+1; n++) {
-		let value = config.valueMin + n * config.valueStep;
-		angle = config.angleMin + n * angleStep;
-
-		// Red zone
-		let redzoneClass = "";
-		if (value > config.valueRed) {
-			redzoneClass = " redzone";
-		}
-
-		makeElement($elm, "grad grad--" + n + redzoneClass, config.labelFormat(value), {
-			left: (50 - (50 - margin) * Math.sin(angle * (Math.PI / 180))) + "%",
-			top: (50 + (50 - margin) * Math.cos(angle * (Math.PI / 180))) + "%"
-		});
-
-		// Tick
-		makeElement($elm, "grad-tick grad-tick--" + n + redzoneClass, "", {
-			left: (50 - 50 * Math.sin(angle * (Math.PI / 180))) + "%",
-			top: (50 + 50 * Math.cos(angle * (Math.PI / 180))) + "%",
-			transform: "translate3d(-50%, 0, 0) rotate(" + (angle + 180) + "deg)"
-		});
-
-		// Half ticks
-		angle += angleStep / 2;
-
-		if (angle < config.angleMax) {
-			makeElement($elm, "grad-tick grad-tick--half grad-tick--" + n + redzoneClass, "", {
-				left: (50 - 50 * Math.sin(angle * (Math.PI / 180))) + "%",
-				top: (50 + 50 * Math.cos(angle * (Math.PI / 180))) + "%",
-				transform: "translate3d(-50%, 0, 0) rotate(" + (angle + 180) + "deg)"
-			});
-		}
-
-		// Quarter ticks
-		angle += angleStep / 4;
-
-		if (angle < config.angleMax) {
-			makeElement($elm, "grad-tick grad-tick--quarter grad-tick--" + n + redzoneClass, "", {
-				left: (50 - 50 * Math.sin(angle * (Math.PI / 180))) + "%",
-				top: (50 + 50 * Math.cos(angle * (Math.PI / 180))) + "%",
-				transform: "translate3d(-50%, 0, 0) rotate(" + (angle + 180) + "deg)"
-			});
-		}
-
-		angle -= angleStep / 2;
-
-		if (angle < config.angleMax) {
-			makeElement($elm, "grad-tick grad-tick--quarter grad-tick--" + n + redzoneClass, "", {
-				left: (50 - 50 * Math.sin(angle * (Math.PI / 180))) + "%",
-				top: (50 + 50 * Math.cos(angle * (Math.PI / 180))) + "%",
-				transform: "translate3d(-50%, 0, 0) rotate(" + (angle + 180) + "deg)"
-			});
-		}
-	}
-	// NEEDLE
-	angle = value2angle(config.value);
-	$needle = makeElement($elm, "needle", "", {
-		transform: "translate3d(-50%, 0, 0) rotate(" + angle + "deg)"
-	});
-
-	let $axle = makeElement($elm, "needle-axle").addEventListener("click", switchLabel);
-	makeElement($elm, "label label-value", "<div>" + config.labelFormat(config.value) + "</div>" + "<span>" + config.labelUnit + "</span>").addEventListener("click", switchLabel);
-
-	$value = $elm.querySelector(".label-value div");
-};
-
-
-// DOM LOADED FIESTA
-
 document.addEventListener("DOMContentLoaded",	function() {
-
-	let rpmMeter = new Meter(document.querySelector(".meter--rpm"), {
+	let rpmMeter = new GaugeMeter(document.querySelector(".meter--rpm"), {
 		value: 6.3,
 		valueMin: 0,
 		valueMax: 8000,
@@ -138,7 +13,7 @@ document.addEventListener("DOMContentLoaded",	function() {
 		valueRed: 6500
 	});
 
-	let speedMeter = new Meter(document.querySelector(".meter--speed"), {
+	let speedMeter = new GaugeMeter(document.querySelector(".meter--speed"), {
 		value: 203,
 		valueMin: 0,
 		valueMax: 220,
@@ -178,14 +53,15 @@ document.addEventListener("DOMContentLoaded",	function() {
 			isBraking = false;
 		}
 	}
-	// VEHICLE CONFIG
 
+	// VEHICLE CONFIG
 	let
       brakeTorqueMax = 1,
-      speed = 0,	// in km/h
       brakeTorque;
 
-	// MOTOR CONFIG
+  // Set the global speed variable for controlling the star movement speed in the stars animation
+  window.speed = 0;
+
 	let
 			rpmIdle = 0,
 			rpmMax = 7000,
@@ -410,79 +286,5 @@ document.addEventListener("DOMContentLoaded",	function() {
       stopEngine();
     }
   });
-
-// Background logic
-  const canvas = document.querySelector("#stars");
-  const context = canvas.getContext("2d");
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-  canvas.style.position = 'absolute';
-
-  let stars = {};
-  let starIndex = 0;
-  let numStars = 0;
-  let starsToDraw = 100;
-
-  class MovingStar {
-    constructor() {
-      this.x = canvas.width / 2;
-      this.y = canvas.height / 2;
-
-      this.velocityX = Math.random() * 10 - 5;
-      this.velocityY = Math.random() * 10 - 5;
-
-      let start = canvas.width > canvas.height ? canvas.width : canvas.height;
-
-      this.x += this.velocityX * start / 10;
-      this.y += this.velocityY * start / 10;
-
-      this.width = 1;
-      this.heigth = 1;
-      this.radius = 1;
-
-      starIndex++;
-      this.id = starIndex;
-
-      stars[starIndex] = this;
-    }
-
-    render() {
-      this.x += this.velocityX;
-      this.y += this.velocityY;
-
-      this.velocityX += this.velocityX / (50 / (speed /10));
-      this.velocityY += this.velocityY / (50 / (speed /10));
-
-      this.width += 0.01 * (speed /10);
-      this.heigth += 0.01 * (speed /10);
-
-      if (this.x + this.width < 0 || this.x > canvas.width || this.y + this.heigth < 0 || this.y > canvas.height) {
-        delete stars[this.id];
-        numStars--;
-      }
-
-      context.beginPath();
-      context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      context.fillStyle = "#ffffff";
-      context.fill();
-      context.closePath();
-    }
-  }
-
-  (function move() {
-    window.requestAnimationFrame(move);
-    context.fillStyle = "rgba(0, 0, 0, 1)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    for (let i = numStars; i < starsToDraw; i++) {
-      new MovingStar();
-      numStars++;
-    }
-
-    for (let star in stars) {
-      stars[star].render();
-    }
-  })();
-
   navigator.geolocation.watchPosition(updateSpeedFromGeolocation, null, { enableHighAccuracy: !0 });
 });
