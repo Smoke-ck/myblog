@@ -277,10 +277,14 @@ body {
 .toggle-start-stop {
 	color: white;
 	cursor: pointer;
+	display: flex;
+	justify-content: center;
 	user-select: none;
 	transition: background-color 0.3s ease;
+	width: 150px;
+	margin: 0 auto;
 	-webkit-tap-highlight-color: transparent;
-	input {display: none; }
+	input { display: none; }
 	span { font-weight: bold; }
 
 	&__text {
@@ -296,7 +300,7 @@ body {
 		color: white;
 		font-size: 14px;
 		font-weight: bold;
-		margin: 0 auto;
+		// margin: 0 auto;
 		transition: all 0.1s ease-in-out;
 		box-shadow: 0 4px 10px rgba(137, 133, 133, 0.4);
 		span { font-size: 10px; }
@@ -310,7 +314,6 @@ body {
 		margin-bottom: 5px;
 	}
 }
-
 
 .pedal {
   position: relative;
