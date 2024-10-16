@@ -33,8 +33,6 @@ links:
 #     link: /solutions/ecommerce-case
 #   - section: Travel/Logistic
 #     link: /solutions/taxi-and-transportation-case
-- page: Stars
-  link: /stars
 - page: Carousel
   link: /carousel
 - page: Scroller

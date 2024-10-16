@@ -1,13 +1,17 @@
+// Use the 'speed' variable defined in the engine-dashboard.js file
+// This controls the star movement speed and size scaling based on the engine speed
+// Make sure 'speed' is set globally (e.g., window.speed) in the engine-dashboard.js
+
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("#stars");
   const context = canvas.getContext("2d");
   canvas.width = innerWidth;
   canvas.height = innerHeight;
+  canvas.style.position = 'absolute';
 
   let stars = {};
   let starIndex = 0;
   let numStars = 0;
-  let speed = 0.2;
   let starsToDraw = 100;
 
   class MovingStar {
@@ -37,11 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
       this.x += this.velocityX;
       this.y += this.velocityY;
 
-      this.velocityX += this.velocityX / (50 / speed);
-      this.velocityY += this.velocityY / (50 / speed);
+      this.velocityX += this.velocityX / (50 / (speed / 10));
+      this.velocityY += this.velocityY / (50 / (speed / 10));
 
-      this.width += 0.01 * speed;
-      this.heigth += 0.01 * speed;
+      this.width += 0.01 * (speed / 10);
+      this.heigth += 0.01 * (speed / 10);
 
       if (this.x + this.width < 0 || this.x > canvas.width || this.y + this.heigth < 0 || this.y > canvas.height) {
         delete stars[this.id];
