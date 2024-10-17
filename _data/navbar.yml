@@ -42,12 +42,13 @@ links:
 - page: Animation Scroll
   link: /animation_scroll
 - page: Engine Simulator
-  link: /engine-simulator
-  items:
-  - section: Engine Dashboard
-    link: /engine-dashboard
-  - section: Envine Sim V2
-    link: /engine-simulator-v2
+  link: /engine-dashboard
+  # link: /engine-simulator
+  # items:
+  # - section: Engine Dashboard
+  #   link: /engine-dashboard
+  # - section: Envine Sim V2
+  #   link: /engine-simulator-v2
 reviews: Reviews
 faq: FAQ
 blog: Blog
