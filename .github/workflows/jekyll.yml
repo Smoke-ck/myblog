@@ -9,6 +9,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,8 +27,6 @@ jobs:
 
       - name: Build Jekyll site
         run: bundle exec jekyll build
-        env:
-          JEKYLL_ENV: production
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
   deploy:
