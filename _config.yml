@@ -50,6 +50,7 @@ pagination:
 jekyll-minifier:
   compress_css: false
   compress_javascript: true
+  compress_html: true
   uglifier_args:
     harmony: true
 
