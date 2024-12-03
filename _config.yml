@@ -29,13 +29,14 @@ url: "https://smoke-ck.github.io" # the base hostname & protocol for your site, 
 twitter_username: jekyllrb
 github_username:  jekyll
 sass:
-  style: compact
+  style: compressed
 
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
   - jekyll-paginate-v2
+  - jekyll-minifier
 
 pagination:
   enabled: true
@@ -46,6 +47,11 @@ pagination:
   sort_field: 'date'
   sort_reverse: true
 
+jekyll-minifier:
+  compress_css: false
+  compress_javascript: true
+  uglifier_args:
+    harmony: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
